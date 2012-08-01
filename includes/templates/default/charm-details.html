@@ -1,0 +1,140 @@
+{% extends "default/base.html" %}
+
+{% block content %}
+        <ul class="breadcrumb">
+          <li><a href="/charms">charms</a><span class="divider">/</span></li>
+          <li><a href="/charms/{{ charm.meta.series }}">{{ charm.meta.series }}</a><span class="divider">/</span></li>
+          <li class="active">{{ charm.meta.name }}</li>
+        </ul>
+      <div class="row">
+        <div class="span5">
+          <h3>Charm: {{ charm.meta.name }}</h3>
+          <div class="field">
+          <b>Summary</b><br/>
+            <span>{{ charm.meta.summary }}</span>
+            <br><br>
+          </div>
+          <div class="field">
+            <b>Maintainer</b><br/>
+            <span>&nbsp;</span>
+            <br><br>
+          </div>
+          <div class="field">
+            <b>Series</b><br/>
+            <a href="/charms/{{ charm.meta.series }}">{{ charm.meta.series }}</a>
+            <br><br>
+          </div>
+          <div class="field">
+            <b>Description</b><br/>
+            {{ charm.meta.description }}
+            <br><br>
+          </div>
+          <div class="field">
+            <b>Links</b><br/>
+            Source: <a href="https://bazaar.launchpad.net/~charmers/charms/{{ charm.meta.series }}/{{ charm.meta.name }}/trunk/files">lp:~charmers/charms/{{ charm.meta.series }}/{{ charm.meta.name }}/trunk</a>
+            <br>
+            Bug Reports: <a href="https://bugs.launchpad.net/charm/{{ charm.meta.series }}/+source/{{ charm.meta.name }}">Launchpad</a>
+            <br><br>
+          </div>
+        </div>
+  <div class="span1">
+    &nbsp;
+  </div>
+  <div class="span2">
+    <h3>Hooks</h3>
+      <ul class="unstyled">
+       <!-- <li><a href="/charms/{{ charm.meta.series }}/{{ charm.meta.name }}/hooks/{{ charm.fs.hook.install }}">install</a></li> -->
+      </ul>
+  </div>
+  <div class="span2">
+    <h3>Interfaces</h3>
+      <div class="field">
+<!--
+        <b>Provides</b>
+        <ul class="unstyled">
+    <li>
+      mds-server<br/>
+      <a href="/interfaces/ceph-mds">ceph-mds</a>
+    </li> -->
+        </ul>
+      </div>
+  </div>
+
+  <div class="span2">
+    <h3>Config</h3>
+
+<!--    <div class="field">
+      <b>osd-journal-size</b>&nbsp;<em>int</em>
+    </div>
+   <div class="field">
+      <b>run-mon</b>&nbsp;<em>string</em>
+    </div>
+   <div class="field">
+      <b>run-osd</b>&nbsp;<em>string</em>
+    </div>
+   <div class="field">
+      <b>root-ssh</b>&nbsp;<em>string</em>
+    </div>
+   <div class="field">
+      <b>rados-port</b>&nbsp;<em>int</em>
+    </div>
+   <div class="field">
+      <b>run-mds</b>&nbsp;<em>string</em>
+    </div> 
+    <a href="/charms/precise/ceph/config">Details</a> -->
+  </div> 
+      </div>
+      <div class="row">  
+  <div class="span8">
+      <h3>Readme</h3>
+      <pre>{{ charm.meta.readme }}</pre>
+
+     <!--
+    <h5>Changes &nbsp;
+      <a href="/charms/precise/ceph/changes">
+        <img width="14" height="14" src="http://jujucharms.com/static/feed-icon-14x14.png"/>
+      </a>
+    </h5>
+            <table id="charm-changes" class="table table-striped table-bordered shogun">
+                <tbody>
+                  <tr>
+          <td>2012/05/22 Clint Byrum setting maintainer (<a href="https://bazaar.launchpad.net/~charmers/charms/precise/ceph/trunk/revision/17">revno 17</a>)</td>
+        </tr>
+                  <tr>
+          <td>2012/01/28 Mark Mims strong config types (<a href="https://bazaar.launchpad.net/~charmers/charms/precise/ceph/trunk/revision/16">revno 16</a>)</td>
+        </tr>
+                  <tr>
+          <td>2011/10/20 Clint Byrum add osds dynamically (<a href="https://bazaar.launchpad.net/~charmers/charms/precise/ceph/trunk/revision/15">revno 15</a>)</td>
+        </tr>
+                  <tr>
+          <td>2011/10/20 Clint Byrum works for mon scaling. Not so much for mds/osd (<a href="https://bazaar.launchpad.net/~charmers/charms/precise/ceph/trunk/revision/14">revno 14</a>)</td>
+        </tr>
+                  <tr>
+          <td>2011/10/19 Clint Byrum adding mon departed (<a href="https://bazaar.launchpad.net/~charmers/charms/precise/ceph/trunk/revision/13">revno 13</a>)</td>
+        </tr>
+                  <tr>
+          <td>2011/10/19 Clint Byrum adds mons (<a href="https://bazaar.launchpad.net/~charmers/charms/precise/ceph/trunk/revision/12">revno 12</a>)</td>
+        </tr>
+                  <tr>
+          <td>2011/10/19 Clint Byrum communicate mon dir with tar/base64, still need to track pending mons (<a href="https://bazaar.launchpad.net/~charmers/charms/precise/ceph/trunk/revision/11">revno 11</a>)</td>
+        </tr>
+                  <tr>
+          <td>2011/10/15 Clint Byrum gtting closer, fixing mechanical problems, still need to time mkcephfs or coordinate it properly (<a href="https://bazaar.launchpad.net/~charmers/charms/precise/ceph/trunk/revision/10">revno 10</a>)</td>
+        </tr>
+                  <tr>
+          <td>2011/10/15 Clint Byrum more dynamic mon processing, refactors of local handling (<a href="https://bazaar.launchpad.net/~charmers/charms/precise/ceph/trunk/revision/9">revno 9</a>)</td>
+        </tr>
+                </tbody>    
+            </table>
+  -->
+  </div>
+  <!--
+  <div class="span4">
+      <h5>Lint Check</h5>
+      <ul>
+      </ul>
+            <br/>
+  </div>
+  -->
+</div>
+{% endblock %}
