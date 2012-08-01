@@ -10,13 +10,12 @@ function notfound_controller() {
 //[ <a href="/raw">Mongo Debug Info</a> | <a href='/server-info'>Server Debug Info</a> ]
 }
 
-function default_controler() {
-  global $loader,$twig,$mongo,$col_charms;
+function get_series_charms($series = DEFAULT_SERIES) {
+  global $mongo,$col_charms;
   $find_charmers = new MongoRegex("/.*charmers.*/");
-  $find_defseries = new MongoRegex("/cs:".DEFAULT_SERIES.".*/");
+  $find_defseries = new MongoRegex("/cs:".$series.".*/");
   $cur_charms = $col_charms->find(array('urls.0' => $find_charmers,'urls.1' => $find_defseries))->sort(array('meta.name' => 1));
 
-  $total_charms = $cur_charms->count();
   $cur_charms->rewind();
   if ($cur_charms->valid()) {
       $charms = iterator_to_array($cur_charms);
@@ -26,8 +25,13 @@ function default_controler() {
     $href_path = @explode("/",$charm['urls'][1]);
     $charm['meta']['series'] = substr($href_path[0], 3);
   }
+  return $charms;
+}
 
-  print $twig->render('default/index.html', array('charms' => $charms, 'total' => $total_charms));
+function default_controler() {
+  global $loader,$twig;
+  $charms = get_series_charms();
+  print $twig->render('default/index.html', array('charms' => $charms, 'total' => '0'));
 };
 
 function charm_details_controller($series,$charm_name = "") {
@@ -47,20 +51,7 @@ function charm_details_controller($series,$charm_name = "") {
 }
 
 function get_series_controller($series){
-  global $loader,$twig,$mongo,$col_charms;
-  $find_defseries = new MongoRegex("/cs:".$series.".*/");
-  $cur_charms = $col_charms->find(array('urls.1' => $find_defseries))->sort(array('meta.name' => 1));
-
-  $total_charms = $cur_charms->count();
-  $cur_charms->rewind();
-  if ($cur_charms->valid()) {
-      $charms = iterator_to_array($cur_charms);
-  }
-
-  foreach ($charms as $charm) {
-    $href_path = @explode("/",$charm['urls'][1]);
-    $charm_series[$charm['meta']['name']] = substr($href_path[0], 3);
-  }
-
-  print $twig->render('default/index.html', array('charms' => $charms, 'total' => $total_charms,'series' => $charm_series));
+  global $loader,$twig;
+  $charms = get_series_charms($series);
+  print $twig->render('default/index.html', array('charms' => $charms, 'total' => '0'));
 }
