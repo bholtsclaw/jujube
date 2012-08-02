@@ -28,11 +28,15 @@ function get_series_charms($series = DEFAULT_SERIES) {
   return $charms;
 }
 
-function api_controller($series = DEFAULT_SERIES,$charm_name,$file) {
+function api_controller($series = DEFAULT_SERIES,$charm_name,$file,$format) {
   $yaml = @file_get_contents("/mnt/charms/$series/$charm_name/$file");
   $parsed_yaml = yaml_parse($yaml);
 
-  print json_encode($parsed_yaml,JSON_PRETTY_PRINT);
+  if($format == 'json') {
+    print json_encode($parsed_yaml,JSON_PRETTY_PRINT);
+  } else {
+    print $yaml;
+  }
 }
 
 function default_controler() {

@@ -1,19 +1,21 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
 
-  <title>Jujubee Charm Browser</title>
+  <title>Jujubee - juju Charmstore</title>
   <meta name="description" content="Jujubee Charm Browser for http://juju.ubuntu.com Charms">
   <meta name="keyword" content="juju, charms, cloud, service orchestration, service deployment">
   <meta name="author" content="Brandon Holtsclaw">
   <meta name="viewport" content="width=device-width">
 
   <link rel="stylesheet" href="/assets/css/style.css">
-
   <script src="/assets/js/libs/modernizr.min.js"></script>
+
+  <link rel="stylesheet" href="/includes/lib/prettify/prettify.css">
+  <script src="/includes/lib/prettify/prettify.js"></script>
 </head>
-<body>
+<body OnLoad="PrettyPrint();">
 <!--[if lt IE 8]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
 <div class="navbar navbar-fixed-top">
@@ -29,8 +31,8 @@
         <ul class="nav">
           <li class="active"><a href="/">Charms</a></li>
           <li><a href="http://juju.ubuntu.com/docs/" target="_top">What is Juju?</a></li>
-          <li><a href="/charmer-tools">Charmer Tools</a></li>
-          <li><a href="/jujube-faq">Jujube FAQ</a></li>
+          <!-- <li><a href="/charmer-tools">Charmer Tools</a></li>
+          <li><a href="/jujube-faq">Jujube FAQ</a></li> -->
         </ul>
       </div><!--/.nav-collapse -->
     </div>

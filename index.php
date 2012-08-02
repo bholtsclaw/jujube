@@ -1,5 +1,6 @@
-<?php 
-require_once("__init__.php");
+<?php
+require_once("includes/bootstrap.php");
+
 global $app;
 
 $app->run();

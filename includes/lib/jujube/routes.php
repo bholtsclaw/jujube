@@ -11,7 +11,8 @@ $app->get('/charms/:series', 'get_series_controller');
 
 $app->get('/charms/:series/:charm_name', 'charm_details_controller');
 
-$app->get('/api/latest/charms/:series/:charm_name/contents/:file', 'api_controller');
+$app->get('/api/v0/charms/:series/:charm_name/contents/:file/:format', 'api_controller');
+$app->get('/api/latest/charms/:series/:charm_name/contents/:file/:format', 'api_controller');
 
 $app->get('/server-info', function () { phpinfo(); });
 
