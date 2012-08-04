@@ -7,7 +7,21 @@ $col_charms = $mongo->juju->charms;
 function notfound_controller() {
   global $loader,$twig;
   print $twig->render('default/404.html');
-//[ <a href="/raw">Mongo Debug Info</a> | <a href='/server-info'>Server Debug Info</a> ]
+  //[ <a href="/raw">Mongo Debug Info</a> | <a href='/server-info'>Server Debug Info</a> ]
+}
+
+function get_hooks($series = DEFAULT_SERIES,$charm_name) {
+  $directory = realpath(CHARMS_CONTENT."/$series/$charm_name/hooks/");
+  $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory), RecursiveIteratorIterator::SELF_FIRST);
+  $objects = iterator_to_array($objects);
+  foreach($objects as $name=>&$object){
+    if(!is_file($name)){
+      unset($objects[$name]);
+    } else {
+      $object = basename($name);
+    }
+  }
+  return $objects;
 }
 
 function get_series_charms($series = DEFAULT_SERIES) {
@@ -21,16 +35,23 @@ function get_series_charms($series = DEFAULT_SERIES) {
       $charms = iterator_to_array($cur_charms);
   }
 
-  foreach ($charms as &$charm) {
+  $charm_names = array();
+  foreach ($charms as $key=>&$charm) {
     $href_path = @explode("/",$charm['urls'][1]);
     $charm['meta']['series'] = substr($href_path[0], 3);
+    if ( in_array( $charm['meta']['name'], $charm_names ) ) {
+        unset($charms[$key]);
+    }
+    else {
+        $charm_names[] = $charm['meta']['name'];
+    }
   }
   return $charms;
 }
 
-function api_controller($series = DEFAULT_SERIES,$charm_name,$file,$format) {
-  $yaml = @file_get_contents("/mnt/charms/$series/$charm_name/$file");
-  $parsed_yaml = yaml_parse($yaml);
+function api_controller($apiver,$series = DEFAULT_SERIES,$charm_name,$file,$format) {
+  $yaml = @file_get_contents(CHARMS_CONTENT."/$series/$charm_name/$file");
+  $parsed_yaml = @yaml_parse($yaml);
 
   if($format == 'json') {
     print json_encode($parsed_yaml,JSON_PRETTY_PRINT);
@@ -55,10 +76,11 @@ function charm_details_controller($series,$charm_name = "") {
   } elseif (file_exists("/mnt/charms/$series/$charm_name/readme")) {
     $charm['meta']['readme'] = file_get_contents("/mnt/charms/$series/$charm_name/readme");
   }
-
   $charm['meta']['series'] = $series;
+  $charm['hooks'] = get_hooks($charm['meta']['series'],$charm['meta']['name']);
 
   print $twig->render('default/charm-details.html', array('charm' => $charm));
+  //print_r($charm);
 }
 
 function get_series_controller($series){

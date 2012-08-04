@@ -43,7 +43,9 @@
   <div class="span2">
     <h3>Hooks</h3>
       <ul class="unstyled">
-       <!-- <li><a href="/charms/{{ charm.meta.series }}/{{ charm.meta.name }}/hooks/{{ charm.fs.hook.install }}">install</a></li> -->
+        {% for hook in charm.hooks %}
+         <li><a href="/charms/{{ charm.meta.series }}/{{ charm.meta.name }}/contents/hooks/{{ hook }}">{{ hook }}</a></li>
+        {% endfor %}
       </ul>
   </div>
   <div class="span2">
@@ -80,11 +82,11 @@
     </div>
    <div class="field">
       <b>run-mds</b>&nbsp;<em>string</em>
-    </div> 
+    </div>
     <a href="/charms/precise/ceph/config">Details</a> -->
-  </div> 
+  </div>
       </div>
-      <div class="row">  
+      <div class="row">
   <div class="span8">
       <h3>Readme</h3>
       <pre>{{ charm.meta.readme }}</pre>
@@ -124,7 +126,7 @@
                   <tr>
           <td>2011/10/15 Clint Byrum more dynamic mon processing, refactors of local handling (<a href="https://bazaar.launchpad.net/~charmers/charms/precise/ceph/trunk/revision/9">revno 9</a>)</td>
         </tr>
-                </tbody>    
+                </tbody>
             </table>
   -->
   </div>
