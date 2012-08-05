@@ -86,8 +86,11 @@ function charm_details_controller($series,$charm_name = "") {
   $charm['meta']['series'] = $series;
   $charm['hooks'] = get_hooks($charm['meta']['series'],$charm['meta']['name']);
   $c_meta = get_metadata($charm['meta']['series'],$charm['meta']['name']);
-  $charm['meta']['maintainer'] = $c_meta['maintainer'];
-
+  if(!empty($c_meta['maintainer'])){
+    $charm['meta']['maintainer'] = $c_meta['maintainer'];
+  } else {
+    $charm['meta']['maintainer'] = "None Listed";
+  }
   print $twig->render('default/charm-details.html', array('charm' => $charm));
   //print_r($charm);
 }
