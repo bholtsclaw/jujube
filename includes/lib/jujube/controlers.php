@@ -24,6 +24,12 @@ function get_hooks($series = DEFAULT_SERIES,$charm_name) {
   return $objects;
 }
 
+function get_metadata($series = DEFAULT_SERIES, $charm_name) {
+  $yaml = @file_get_contents(CHARMS_CONTENT."/$series/$charm_name/metadata.yaml");
+  $parsed_yaml = @yaml_parse($yaml);
+  return $parsed_yaml;
+}
+
 function get_series_charms($series = DEFAULT_SERIES) {
   global $mongo,$col_charms;
   $find_charmers = new MongoRegex("/.*charmers.*/");
@@ -49,7 +55,7 @@ function get_series_charms($series = DEFAULT_SERIES) {
   return $charms;
 }
 
-function api_controller($apiver,$series = DEFAULT_SERIES,$charm_name,$file,$format) {
+function api_controller($apiver,$series = DEFAULT_SERIES,$charm_name,$file) {
   $yaml = @file_get_contents(CHARMS_CONTENT."/$series/$charm_name/$file");
   $parsed_yaml = @yaml_parse($yaml);
 
@@ -63,7 +69,8 @@ function api_controller($apiver,$series = DEFAULT_SERIES,$charm_name,$file,$form
 function default_controler() {
   global $loader,$twig;
   $charms = get_series_charms();
-  print $twig->render('default/index.html', array('charms' => $charms, 'total' => '0'));
+  $total = count($charms);
+  print $twig->render('default/index.html', array('charms' => $charms, 'total' => $total));
 };
 
 function charm_details_controller($series,$charm_name = "") {
@@ -78,6 +85,8 @@ function charm_details_controller($series,$charm_name = "") {
   }
   $charm['meta']['series'] = $series;
   $charm['hooks'] = get_hooks($charm['meta']['series'],$charm['meta']['name']);
+  $c_meta = get_metadata($charm['meta']['series'],$charm['meta']['name']);
+  $charm['meta']['maintainer'] = $c_meta['maintainer'];
 
   print $twig->render('default/charm-details.html', array('charm' => $charm));
   //print_r($charm);
