@@ -35,19 +35,23 @@ set_include_path(dirname(__FILE__) . '/../' . PATH_SEPARATOR . get_include_path(
 require_once 'Slim/Slim.php';
 require_once 'Slim/Middleware/ContentTypes.php';
 
-class ContentTypesTest extends PHPUnit_Framework_TestCase {
-    public function setUp() {
+class ContentTypesTest extends PHPUnit_Framework_TestCase
+{
+    public function setUp()
+    {
         ob_start();
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         ob_end_clean();
     }
 
     /**
      * Test parses JSON
      */
-    public function testParsesJson() {
+    public function testParsesJson()
+    {
         Slim_Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
             'CONTENT_TYPE' => 'application/json',
@@ -65,7 +69,8 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase {
     /**
      * Test ignores JSON with errors
      */
-    public function testParsesJsonWithError() {
+    public function testParsesJsonWithError()
+    {
         Slim_Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
             'CONTENT_TYPE' => 'application/json',
@@ -83,7 +88,8 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase {
     /**
      * Test parses XML
      */
-    public function testParsesXml() {
+    public function testParsesXml()
+    {
         Slim_Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
             'CONTENT_TYPE' => 'application/xml',
@@ -95,13 +101,14 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase {
         $s->run();
         $body = $s->request()->getBody();
         $this->assertInstanceOf('SimpleXMLElement', $body);
-        $this->assertEquals('Clive Cussler', (string)$body->book->author);
+        $this->assertEquals('Clive Cussler', (string) $body->book->author);
     }
 
     /**
      * Test ignores XML with errors
      */
-    public function testParsesXmlWithError() {
+    public function testParsesXmlWithError()
+    {
         Slim_Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
             'CONTENT_TYPE' => 'application/xml',
@@ -119,7 +126,8 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase {
     /**
      * Test parses CSV
      */
-    public function testParsesCsv() {
+    public function testParsesCsv()
+    {
         Slim_Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
             'CONTENT_TYPE' => 'text/csv',
@@ -140,7 +148,8 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase {
      * Test parses request body based on media-type only, disregarding
      * any extra content-type header parameters
      */
-    public function testParsesRequestBodyWithMediaType() {
+    public function testParsesRequestBodyWithMediaType()
+    {
         Slim_Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
             'CONTENT_TYPE' => 'application/json; charset=ISO-8859-4',

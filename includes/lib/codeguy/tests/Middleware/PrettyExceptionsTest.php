@@ -34,11 +34,13 @@ set_include_path(dirname(__FILE__) . '/../' . PATH_SEPARATOR . get_include_path(
 
 require_once 'Slim/Slim.php';
 
-class PrettyExceptionsTest extends PHPUnit_Framework_TestCase {
+class PrettyExceptionsTest extends PHPUnit_Framework_TestCase
+{
     /**
      * Test middleware returns successful response unchanged
      */
-    public function testReturnsUnchangedSuccessResponse() {
+    public function testReturnsUnchangedSuccessResponse()
+    {
         Slim_Environment::mock(array(
             'SCRIPT_NAME' => '/index.php',
             'PATH_INFO' => '/foo'
@@ -58,7 +60,8 @@ class PrettyExceptionsTest extends PHPUnit_Framework_TestCase {
     /**
      * Test middleware returns diagnostic screen for error response
      */
-    public function testReturnsDiagnosticsForErrorResponse() {
+    public function testReturnsDiagnosticsForErrorResponse()
+    {
         Slim_Environment::mock(array(
             'SCRIPT_NAME' => '/index.php',
             'PATH_INFO' => '/foo'

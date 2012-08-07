@@ -4,33 +4,39 @@ $twig = new Twig_Environment($loader);
 $mongo = new Mongo(MONGO_HOST);
 $col_charms = $mongo->juju->charms;
 
-function notfound_controller() {
+function notfound_controller()
+{
   global $loader,$twig;
   print $twig->render('default/404.html');
   //[ <a href="/raw">Mongo Debug Info</a> | <a href='/server-info'>Server Debug Info</a> ]
 }
 
-function get_hooks($series = DEFAULT_SERIES,$charm_name) {
-  $directory = realpath(CHARMS_CONTENT."/$series/$charm_name/hooks/");
-  $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory), RecursiveIteratorIterator::SELF_FIRST);
-  $objects = iterator_to_array($objects);
-  foreach($objects as $name=>&$object){
-    if(!is_file($name)){
+function get_hooks($series = DEFAULT_SERIES,$charm_name)
+{
+    $directory = realpath(CHARMS_CONTENT."/$series/$charm_name/hooks/");
+    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory), RecursiveIteratorIterator::SELF_FIRST);
+    $objects = iterator_to_array($objects);
+    foreach ($objects as $name=>&$object) {
+    if (!is_file($name)) {
       unset($objects[$name]);
     } else {
       $object = basename($name);
     }
   }
+
   return $objects;
 }
 
-function get_metadata($series = DEFAULT_SERIES, $charm_name) {
-  $yaml = @file_get_contents(CHARMS_CONTENT."/$series/$charm_name/metadata.yaml");
-  $parsed_yaml = @yaml_parse($yaml);
-  return $parsed_yaml;
+function get_metadata($series = DEFAULT_SERIES, $charm_name)
+{
+    $yaml = @file_get_contents(CHARMS_CONTENT."/$series/$charm_name/metadata.yaml");
+    $parsed_yaml = @yaml_parse($yaml);
+
+    return $parsed_yaml;
 }
 
-function get_series_charms($series = DEFAULT_SERIES) {
+function get_series_charms($series = DEFAULT_SERIES)
+{
   global $mongo,$col_charms;
   $find_charmers = new MongoRegex("/.*charmers.*/");
   $find_defseries = new MongoRegex("/cs:".$series.".*/");
@@ -47,38 +53,41 @@ function get_series_charms($series = DEFAULT_SERIES) {
     $charm['meta']['series'] = substr($href_path[0], 3);
     if ( in_array( $charm['meta']['name'], $charm_names ) ) {
         unset($charms[$key]);
-    }
-    else {
+    } else {
         $charm_names[] = $charm['meta']['name'];
     }
   }
+
   return $charms;
 }
 
-function api_controller($apiver,$series = DEFAULT_SERIES,$charm_name,$file) {
+function api_controller($apiver,$series = DEFAULT_SERIES,$charm_name,$file)
+{
   $yaml = @file_get_contents(CHARMS_CONTENT."/$series/$charm_name/$file");
   $parsed_yaml = @yaml_parse($yaml);
 
-  if($format == 'json') {
+  if ($format == 'json') {
     print json_encode($parsed_yaml,JSON_PRETTY_PRINT);
   } else {
     print $yaml;
   }
 }
 
-function default_controler() {
+function default_controler()
+{
   global $loader,$twig;
   $charms = get_series_charms();
   $total = count($charms);
   print $twig->render('default/index.html', array('charms' => $charms, 'total' => $total));
 };
 
-function charm_details_controller($series,$charm_name = "") {
+function charm_details_controller($series,$charm_name = "")
+{
   global $loader,$twig,$m,$col_charms;
   $find['meta.name'] = new MongoRegex("/^$charm_name/");
   $charm = $col_charms->findOne($find);
 
-  if(file_exists("/mnt/charms/$series/$charm_name/README")) {
+  if (file_exists("/mnt/charms/$series/$charm_name/README")) {
     $charm['meta']['readme'] = file_get_contents("/mnt/charms/$series/$charm_name/README");
   } elseif (file_exists("/mnt/charms/$series/$charm_name/readme")) {
     $charm['meta']['readme'] = file_get_contents("/mnt/charms/$series/$charm_name/readme");
@@ -86,7 +95,7 @@ function charm_details_controller($series,$charm_name = "") {
   $charm['meta']['series'] = $series;
   $charm['hooks'] = get_hooks($charm['meta']['series'],$charm['meta']['name']);
   $c_meta = get_metadata($charm['meta']['series'],$charm['meta']['name']);
-  if(!empty($c_meta['maintainer'])){
+  if (!empty($c_meta['maintainer'])) {
     $charm['meta']['maintainer'] = $c_meta['maintainer'];
   } else {
     $charm['meta']['maintainer'] = "None Listed";
@@ -95,7 +104,8 @@ function charm_details_controller($series,$charm_name = "") {
   //print_r($charm);
 }
 
-function get_series_controller($series){
+function get_series_controller($series)
+{
   global $loader,$twig;
   $charms = get_series_charms($series);
   print $twig->render('default/index.html', array('charms' => $charms, 'total' => '0'));

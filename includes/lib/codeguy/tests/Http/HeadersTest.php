@@ -34,11 +34,13 @@ set_include_path(dirname(__FILE__) . '/../' . PATH_SEPARATOR . get_include_path(
 
 require_once 'Slim/Http/Headers.php';
 
-class HeadersTest extends PHPUnit_Framework_TestCase {
+class HeadersTest extends PHPUnit_Framework_TestCase
+{
     /**
      * Test constructor without args
      */
-    public function testConstructorWithoutArgs() {
+    public function testConstructorWithoutArgs()
+    {
         $h = new Slim_Http_Headers();
         $this->assertEquals(0, count($h));
     }
@@ -46,7 +48,8 @@ class HeadersTest extends PHPUnit_Framework_TestCase {
     /**
      * Test constructor with args
      */
-    public function testConstructorWithArgs() {
+    public function testConstructorWithArgs()
+    {
         $h = new Slim_Http_Headers(array('Content-Type' => 'text/html'));
         $this->assertEquals(1, count($h));
     }
@@ -54,7 +57,8 @@ class HeadersTest extends PHPUnit_Framework_TestCase {
     /**
      * Test get and set header
      */
-    public function testSetAndGetHeader() {
+    public function testSetAndGetHeader()
+    {
         $h = new Slim_Http_Headers();
         $h['Content-Type'] = 'text/html';
         $this->assertEquals('text/html', $h['Content-Type']);
@@ -65,7 +69,8 @@ class HeadersTest extends PHPUnit_Framework_TestCase {
     /**
      * Test get non-existent header
      */
-    public function testGetNonExistentHeader() {
+    public function testGetNonExistentHeader()
+    {
         $h = new Slim_Http_Headers();
         $this->assertNull($h['foo']);
     }
@@ -73,7 +78,8 @@ class HeadersTest extends PHPUnit_Framework_TestCase {
     /**
      * Test isset header
      */
-    public function testHeaderIsSet() {
+    public function testHeaderIsSet()
+    {
         $h = new Slim_Http_Headers();
         $h['Content-Type'] = 'text/html';
         $this->assertTrue(isset($h['Content-Type']));
@@ -85,7 +91,8 @@ class HeadersTest extends PHPUnit_Framework_TestCase {
     /**
      * Test unset header
      */
-    public function testUnsetHeader() {
+    public function testUnsetHeader()
+    {
         $h = new Slim_Http_Headers();
         $h['Content-Type'] = 'text/html';
         $this->assertEquals(1, count($h));
@@ -96,7 +103,8 @@ class HeadersTest extends PHPUnit_Framework_TestCase {
     /**
      * Test merge headers
      */
-    public function testMergeHeaders() {
+    public function testMergeHeaders()
+    {
         $h = new Slim_Http_Headers();
         $h['Content-Type'] = 'text/html';
         $this->assertEquals(1, count($h));
@@ -109,12 +117,13 @@ class HeadersTest extends PHPUnit_Framework_TestCase {
     /**
      * Test iteration
      */
-    public function testIteration() {
+    public function testIteration()
+    {
         $h = new Slim_Http_Headers();
         $h['One'] = 'Foo';
         $h['Two'] = 'Bar';
         $output = '';
-        foreach ( $h as $key => $value ) {
+        foreach ($h as $key => $value) {
             $output .= $key . $value;
         }
         $this->assertEquals('OneFooTwoBar', $output);
@@ -123,12 +132,13 @@ class HeadersTest extends PHPUnit_Framework_TestCase {
     /**
      * Test outputs header name in original form, not canonical form
      */
-    public function testOutputsOriginalNotCanonicalName() {
+    public function testOutputsOriginalNotCanonicalName()
+    {
         $h = new Slim_Http_Headers();
         $h['X-Powered-By'] = 'Slim';
         $h['Content-Type'] = 'text/csv';
         $keys = array();
-        foreach ( $h as $name => $value ) {
+        foreach ($h as $name => $value) {
             $keys[] = $name;
         }
         $this->assertContains('X-Powered-By', $keys);

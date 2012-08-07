@@ -25,4 +25,3 @@ $app->get('/raw', function () {
         }
         print '</pre>';
 });
-

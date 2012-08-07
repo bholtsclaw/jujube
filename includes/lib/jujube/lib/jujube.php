@@ -7,4 +7,3 @@ $twig->registerUndefinedFunctionCallback(function ($name) {
 
     return false;
 });
-

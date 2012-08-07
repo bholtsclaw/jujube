@@ -57,7 +57,8 @@
  * @author     Josh Lockhart
  * @since      1.5.2
  */
-class Slim_Middleware_SessionCookie extends Slim_Middleware {
+class Slim_Middleware_SessionCookie extends Slim_Middleware
+{
     /**
      * @var array
      */
@@ -66,10 +67,11 @@ class Slim_Middleware_SessionCookie extends Slim_Middleware {
     /**
      * Constructor
      *
-     * @param   array $settings
-     * @return  void
+     * @param  array $settings
+     * @return void
      */
-    public function __construct( $settings = array() ) {
+    public function __construct( $settings = array() )
+    {
         $this->settings = array_merge(array(
             'expires' => '20 minutes',
             'path' => '/',
@@ -109,7 +111,8 @@ class Slim_Middleware_SessionCookie extends Slim_Middleware {
      * Call
      * @return void
      */
-    public function call() {
+    public function call()
+    {
         $this->loadSession();
         $this->next->call();
         $this->saveSession();
@@ -117,10 +120,11 @@ class Slim_Middleware_SessionCookie extends Slim_Middleware {
 
     /**
      * Load session
-     * @param   array $env
-     * @return  void
+     * @param  array $env
+     * @return void
      */
-    protected function loadSession() {
+    protected function loadSession()
+    {
         session_start();
         $value = Slim_Http_Util::decodeSecureCookie(
             $this->app->request()->cookies($this->settings['name']),
@@ -128,7 +132,7 @@ class Slim_Middleware_SessionCookie extends Slim_Middleware {
             $this->settings['cipher'],
             $this->settings['cipher_mode']
         );
-        if ( $value ) {
+        if ($value) {
             $_SESSION = unserialize($value);
         } else {
             $_SESSION = array();
@@ -137,9 +141,10 @@ class Slim_Middleware_SessionCookie extends Slim_Middleware {
 
     /**
      * Save session
-     * @return  void
+     * @return void
      */
-    protected function saveSession() {
+    protected function saveSession()
+    {
         $value = Slim_Http_Util::encodeSecureCookie(
             serialize($_SESSION),
             $this->settings['expires'],
@@ -165,27 +170,33 @@ class Slim_Middleware_SessionCookie extends Slim_Middleware {
     /**
      * Session Handler Stubs
      */
-    public function open( $savePath, $sessionName ) {
+    public function open( $savePath, $sessionName )
+    {
         return true;
     }
 
-    public function close() {
+    public function close()
+    {
         return true;
     }
 
-    public function read( $id ) {
+    public function read( $id )
+    {
         return '';
     }
 
-    public function write( $id, $data ) {
+    public function write( $id, $data )
+    {
         return true;
     }
 
-    public function destroy( $id ) {
+    public function destroy( $id )
+    {
         return true;
     }
 
-    public function gc( $maxlifetime ) {
+    public function gc( $maxlifetime )
+    {
         return true;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-require_once('config.php');
+require_once 'config.php';
 define('APP_ROOT', rtrim(getcwd(),'/'));
 define('INCLUDE_ROOT', APP_ROOT . "/includes");
 define('LIB_ROOT', INCLUDE_ROOT . "/lib");

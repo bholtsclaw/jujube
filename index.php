@@ -1,5 +1,5 @@
 <?php
-require_once("includes/bootstrap.php");
+require_once 'includes/bootstrap.php';
 
 global $app;
 
