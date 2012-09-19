@@ -61,12 +61,20 @@ function get_series_charms($series = DEFAULT_SERIES)
   return $charms;
 }
 
-function api_controller($apiver,$series = DEFAULT_SERIES,$charm_name,$file)
+function api_controller($apiver,$series = DEFAULT_SERIES,$charm_name,$file = 'complete-charm')
 {
+  $format = '';
+  if (isset($_REQUEST['format'])) {
+	$format = 'json';
+  };
+  if ($_REQUEST['format'] === 'raw'){$format = 'raw';};
+  if ($_REQUEST['format'] === 'yaml'){$format = 'yaml';};
+  if ($_REQUEST['format'] === 'json'){$format = 'json';};
+
   $yaml = @file_get_contents(CHARMS_CONTENT."/$series/$charm_name/$file");
   $parsed_yaml = @yaml_parse($yaml);
 
-  if ($format == 'json') {
+  if ($format != 'raw') {
     print json_encode($parsed_yaml,JSON_PRETTY_PRINT);
   } else {
     print $yaml;
